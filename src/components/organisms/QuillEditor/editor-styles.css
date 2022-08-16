@@ -1,0 +1,32 @@
+.editor-container {
+  width: 80%;
+  padding-top: 5px;
+  padding-right: 5px;
+}
+.text-editor {
+  max-height: calc(100% - 59px);
+}
+.entry-title {
+  font-size: 30px;
+  font-weight: bolder;
+  background-color: darkolivegreen;
+  padding: 3px;
+  padding-left: 20px;
+  height: 59px;
+  overflow-wrap: anywhere;
+  width: -webkit-fill-available;
+  line-height: 50px;
+  resize: none;
+  border: 1px;
+  border-style: solid;
+}
+#quillEditor {
+  background: lightgrey;
+  height: 100%;
+}
+#quillEditor .ql-toolbar.ql-snow {
+  background: darkgrey;
+}
+.ql-container {
+  height: calc(100% - 50px);
+}

@@ -1,0 +1,45 @@
+.sidebar-container {
+  width: 20%;
+  padding: 5px;
+  vertical-align: middle;
+}
+.month-grid-container {
+  display: grid;
+  /* grid-template-columns: 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem; */
+  grid-template-columns: auto auto auto auto auto auto auto;
+  justify-content: stretch;
+  border: 2px;
+  border-top: 0;
+  border-bottom: 0;
+  border-style: solid;
+  /* width: 100%; */
+  background-color: darkslategray;
+}
+.day-grid-item {
+  text-align: center;
+  background-color: darkslategray;
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.month-row {
+  /* width: 100%; */
+  background-color: darkolivegreen;
+  border: 2px;
+  border-style: solid;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.year-dropdown {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  background: darkslategray;
+  width: 100%;
+  border: solid;
+}
+.year-dropdown-container {
+  padding: 0;
+  width: 100%;
+}

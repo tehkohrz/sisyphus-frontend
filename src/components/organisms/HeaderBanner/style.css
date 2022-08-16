@@ -1,0 +1,26 @@
+.header-banner {
+  padding: 10px 5px;
+  display: flex;
+  background-color: darkslategray;
+}
+.logo-container {
+  display: flex;
+  flex-grow: 1;
+  font-size: 30px;
+  font-weight: 900;
+  gap: 10px;
+}
+.user-elements-container {
+  gap: 10px;
+  font-size: 30px;
+  font-weight: 700;
+  display: flex;
+  margin: 0px 10px;
+  background-color: bisque;
+}
+.log-inout {
+  font-size: 15px;
+  font-weight: 600;
+  background-color: inherit;
+  border: none;
+}
