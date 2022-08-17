@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DropDown, MonthRow } from '../../atoms';
 import { DayGrid } from '../../molecules';
-import { journalApi } from '../../../auth_functions/journal_api';
+import { journalApi } from '../../../api-functions/journal_api';
 import './style.css';
 
 const startYear = 2020;
@@ -23,21 +23,25 @@ const months = [
 
 export default function SideBar() {
   // Change handler for the drop down selection
-  const [selectedYear, setSelectedYear] = useState(new Date().getUTCFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(null);
   const [entriesInMonth, setEntriesInMonth] = useState([]);
+  const [selectedMthYr, setSelectedMthYr] = useState({
+    month: new Date().getUTCMonth(),
+    year: new Date().getUTCFullYear(),
+  })
 
   // Updates the selected year
   function handleYearChange(e) {
-    setSelectedYear(e.target.value);
-    setSelectedMonth(null);
+    setSelectedMthYr({
+      ...selectedMthYr,
+      year: e.target.value,
+    });
   }
 
   return (
     <div className='sidebar-container'>
       <div className='year-dropdown-container'>
         <DropDown
-          selectedYear={selectedYear}
+          selectedYear={selectedMthYr.year}
           startYear={startYear}
           handleChange={handleYearChange}
         />
@@ -46,27 +50,27 @@ export default function SideBar() {
         {/* Set the value to the month index (Dec = 11) for selected month state */}
         {months.map((month, index) => {
           const monthYear = {
-            year: selectedYear,
+            ...selectedMthYr,
             month: 11 - index,
           };
-          // Click handler to update the grid onClick
-          async function handleMonthClick() {
+          
+           // Click handler to update the grid onClick
+          function handleMonthClick(e) {
             // Update selected month for rendering of day grid
-            setSelectedMonth(month);
+            setSelectedMthYr({...selectedMthYr,month});
             // Journal API to retrieve all the entries in the month
-            const entries = await journalApi.getMonth();
-            setEntriesInMonth(entries);
+            // const entries = await journalApi.getMonth();
+            // setEntriesInMonth(entries);
           }
           return (
             <div>
               <MonthRow
                 name={month}
                 key={month}
-                monthYear={monthYear}
                 handleMonthClick={handleMonthClick}
                 className='month-row'
               />
-              {selectedMonth === month && (
+              {selectedMthYr.month === month && (
                 <DayGrid
                   monthYear={monthYear}
                   entriesInMonth={entriesInMonth}
