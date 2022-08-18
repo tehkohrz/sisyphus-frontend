@@ -21,13 +21,13 @@ const months = [
   'January',
 ];
 
-export default function SideBar() {
+export default function SideBar({ setCurrentEntry }) {
   // Change handler for the drop down selection
   const [entriesInMonth, setEntriesInMonth] = useState([]);
   const [selectedMthYr, setSelectedMthYr] = useState({
-    month: new Date().getUTCMonth(),
+    month: null,
     year: new Date().getUTCFullYear(),
-  })
+  });
 
   // Updates the selected year
   function handleYearChange(e) {
@@ -51,16 +51,16 @@ export default function SideBar() {
         {months.map((month, index) => {
           const monthYear = {
             ...selectedMthYr,
-            month: 11 - index,
+            month: 12 - index,
           };
-          
-           // Click handler to update the grid onClick
-          function handleMonthClick(e) {
-            // Update selected month for rendering of day grid
-            setSelectedMthYr({...selectedMthYr,month});
+
+          // Click handler to update the grid onClick
+          async function handleMonthClick() {
             // Journal API to retrieve all the entries in the month
-            // const entries = await journalApi.getMonth();
-            // setEntriesInMonth(entries);
+            const entries = await journalApi.getJournals(monthYear);
+            setEntriesInMonth(entries);
+            // Update selected month for rendering of day grid
+            setSelectedMthYr(monthYear);
           }
           return (
             <div>
@@ -70,10 +70,11 @@ export default function SideBar() {
                 handleMonthClick={handleMonthClick}
                 className='month-row'
               />
-              {selectedMthYr.month === month && (
+              {selectedMthYr.month === monthYear.month && (
                 <DayGrid
                   monthYear={monthYear}
                   entriesInMonth={entriesInMonth}
+                  setCurrentEntry={setCurrentEntry}
                 />
               )}
             </div>

@@ -43,3 +43,7 @@
   padding: 0;
   width: 100%;
 }
+
+.entry-present {
+  background-color: aqua;
+}

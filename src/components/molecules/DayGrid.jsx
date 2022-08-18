@@ -1,64 +1,83 @@
 import React from 'react';
 import { DayCell, DayTitle } from '../atoms';
+import { useJournal } from '../hooks/use-journal';
 
 const DAYS_HEADER = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 
 // Function to get all the days within the month
+// Format object for all days in the month with entries for component rendering
 //! The month start at 0 for Jan
-function getDaysInMonthUTC(month, year) {
-  var date = new Date(Date.UTC(year, month, 1));
-  var days = [];
-  while (date.getUTCMonth() === month) {
-    days.push(new Date(date));
+function getDaysInMonthUTC(month, year, entriesInMonth, getEntry) {
+  //! Month obtained from SQL starts at 1 for Jan
+  const UTCMonth = month - 1;
+  let date = new Date(Date.UTC(year, UTCMonth, 1));
+  let days = [];
+  while (date.getUTCMonth() === UTCMonth) {
+    // Default value for today object
+    const today = { date: null, offSet: 0, entry: false, clickHandler: null };
+    today.date = new Date(date);
     date.setUTCDate(date.getUTCDate() + 1);
+    days.push(today);
   }
   // Off set the first date of the month to the correct day
-  let startDayOffSet = days[0].getUTCDay() + 1;
-  // Account for the grid start line to be Sunday
+  let startDayOffSet = days[0].date.getUTCDay() + 1;
+  // Account for the grid start line to be Sunday 0
   if (startDayOffSet > 7) {
     startDayOffSet = 1;
   }
-  // ! Conditional color rendering when there is an entry
-  return { days, startDayOffSet };
+  days[0].offSet = startDayOffSet;
+
+  // Conditional for entries present, .shift() or i counter doesnt work
+  // @param entry{Date} - date of the entry
+  entriesInMonth.forEach((entry) => {
+    // Minus one for the index of the array starting at 0
+    const index = entry.getUTCDate() - 1;
+    days[index].entry = true;
+    // Create handler for the day component
+    const clickGetJournalHandler = async () => {
+      try {
+        await getEntry(entry);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    days[index].clickHandler = clickGetJournalHandler;
+  });
+  return days;
 }
-function generateDays(monthDays, offSet,entriesInMonth =null) {
-  const dayGrid = monthDays.map((day, index) => {
-    // Set offset column for the first entry
-    // Conditional class to show entry present
-    let entryClass = '';
-    // conditional for entry present
-    //! dependent on a sorted array
-    // if (day === entriesInMonth[0]) {
-    //   entriesInMonth.shift();
-    //   entryClass='entry-present';
-    // }
-    if (index === 0) {
-      return (
-        <DayCell
-          className={`day-grid-item ${entryClass}`}
-          offSet={offSet}
-          date={day.getUTCDate()}
-          key={day}
-        />
-      );
-    }
-    // Remaining days of the week
+
+// Generate the grid items for each day with conditional entry css and onClickHandler
+function generateDays(days) {
+  const dayGrid = days.map((day) => {
+    let entryConditionalClass = '';
+
+    //! Cannot shift the entry out or iterate away
+    day.entry
+      ? (entryConditionalClass = 'day-grid-item entry-present')
+      : (entryConditionalClass = 'day-grid-item');
+
     return (
       <DayCell
-        className={`day-grid-item ${entryClass}`}
-        date={day.getUTCDate()}
-        key={day}
+        className={entryConditionalClass}
+        date={day.date.getUTCDate()}
+        offSet={day.offSet}
+        handleClick={day.clickHandler}
+        key={day.date}
       />
     );
-  })
+  });
   return dayGrid;
 }
 
-export default function DayGrid({ monthYear, entriesInMonth }) {
+export default function DayGrid({
+  monthYear,
+  entriesInMonth,
+  setCurrentEntry,
+}) {
   const { month, year } = monthYear;
-  const { days, startDayOffSet } = getDaysInMonthUTC(month, year);
-
-
+  const { getEntry, selectedEntry } = useJournal();
+  const days = getDaysInMonthUTC(month, year, entriesInMonth, getEntry);
+  console.log('hello', selectedEntry.title);
   return (
     <>
       <div className='month-grid-container'>
@@ -70,28 +89,7 @@ export default function DayGrid({ monthYear, entriesInMonth }) {
         }
         {/* Creates the cells for each week for the days in the month */}
         {/* onClick to retrieve the entry for each */}
-        {generateDays(days,startDayOffSet)}
-        {/* {days.map((day, index) => {
-          // Set offset column for the first entry
-          if (index === 0) {
-            return (
-              <DayCell
-                className='day-grid-item'
-                offSet={startDayOffSet}
-                date={day.getUTCDate()}
-                key={day}
-              />
-            );
-          }
-          // Remaining days of the week
-          return (
-            <DayCell
-              className='day-grid-item'
-              date={day.getUTCDate()}
-              key={day}
-            />
-          );
-        })} */}
+        {generateDays(days)}
       </div>
     </>
   );
