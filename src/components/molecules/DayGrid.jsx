@@ -7,15 +7,24 @@ const DAYS_HEADER = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 // Function to get all the days within the month
 // Format object for all days in the month with entries for component rendering
 //! The month start at 0 for Jan
-function getDaysInMonthUTC(month, year, entriesInMonth, getEntry) {
+function getDaysInMonthUTC(month, year, entriesInMonth, getEntry, updateDate) {
   //! Month obtained from SQL starts at 1 for Jan
   const UTCMonth = month - 1;
   let date = new Date(Date.UTC(year, UTCMonth, 1));
   let days = [];
+
   while (date.getUTCMonth() === UTCMonth) {
+    const currentDate = new Date(date);
+    const clickHandler = () => {
+      updateDate(currentDate);
+    };
     // Default value for today object
-    const today = { date: null, offSet: 0, entry: false, clickHandler: null };
-    today.date = new Date(date);
+    const today = {
+      date: currentDate,
+      offSet: 0,
+      entry: false,
+      clickHandler,
+    };
     date.setUTCDate(date.getUTCDate() + 1);
     days.push(today);
   }
@@ -29,6 +38,7 @@ function getDaysInMonthUTC(month, year, entriesInMonth, getEntry) {
 
   // Conditional for entries present, .shift() or i counter doesnt work
   // @param entry{Date} - date of the entry
+  //! Cannot shift the entry out or iterate away
   entriesInMonth.forEach((entry) => {
     // Minus one for the index of the array starting at 0
     const index = entry.getUTCDate() - 1;
@@ -47,15 +57,16 @@ function getDaysInMonthUTC(month, year, entriesInMonth, getEntry) {
 }
 
 // Generate the grid items for each day with conditional entry css and onClickHandler
-function generateDays(days) {
+function GenerateDays(days) {
+  const { selectedEntry } = useJournal();
   const dayGrid = days.map((day) => {
     let entryConditionalClass = '';
 
-    //! Cannot shift the entry out or iterate away
-    day.entry
+    day.date === selectedEntry.entry_date
+      ? (entryConditionalClass = 'day-grid-item selected-day')
+      : day.entry
       ? (entryConditionalClass = 'day-grid-item entry-present')
       : (entryConditionalClass = 'day-grid-item');
-
     return (
       <DayCell
         className={entryConditionalClass}
@@ -69,15 +80,16 @@ function generateDays(days) {
   return dayGrid;
 }
 
-export default function DayGrid({
-  monthYear,
-  entriesInMonth,
-  setCurrentEntry,
-}) {
+export default function DayGrid({ monthYear, entriesInMonth }) {
   const { month, year } = monthYear;
-  const { getEntry, selectedEntry } = useJournal();
-  const days = getDaysInMonthUTC(month, year, entriesInMonth, getEntry);
-  console.log('hello', selectedEntry.title);
+  const { getEntry, updateDate } = useJournal();
+  const days = getDaysInMonthUTC(
+    month,
+    year,
+    entriesInMonth,
+    getEntry,
+    updateDate
+  );
   return (
     <>
       <div className='month-grid-container'>
@@ -89,7 +101,7 @@ export default function DayGrid({
         }
         {/* Creates the cells for each week for the days in the month */}
         {/* onClick to retrieve the entry for each */}
-        {generateDays(days)}
+        {GenerateDays(days)}
       </div>
     </>
   );

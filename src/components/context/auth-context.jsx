@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer } from 'react';
-import { authApi } from '../../auth_functions/auth_api';
+import { authApi } from '../../api-functions/auth_api';
 
 const ActionType = {
   INITIALIZE: 'INITIALIZE',
@@ -88,7 +88,6 @@ export const AuthProvider = (props) => {
         // Cookie is set here and responded here
         //! Authorisation API Insert
         let { success, user } = await authApi.reAuth();
-
         if (success) {
           // The object passed into dispatch is action -> action.type calls the method
           // Action is used and passed into the reducer -> action.payload destructed in the method
@@ -119,24 +118,26 @@ export const AuthProvider = (props) => {
         });
       }
     };
-
     initialize();
   }, []);
 
   const signIn = async (username, password) => {
     try {
-      const user = await authApi.signIn({ username, password });
-
+      const data = await authApi.signIn(username, password);
+      const user = {
+        username: data.username,
+        user_id: data.id,
+      };
       dispatch({
         type: ActionType.SIGNIN,
         payload: {
-          user: user.data,
+          user,
           isAuthenticated: true,
         },
       });
     } catch (err) {
       console.log(err);
-      return err;
+      throw err;
     }
   };
 

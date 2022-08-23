@@ -21,8 +21,16 @@ class JournalApi {
   async getEntry(year, month, day) {
     try {
       const address = HOST + `/journal/${year}/${month}/${day}`;
-      console.log({ address });
       const { data } = await axios.get(address);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async postEntry(selectedEntry) {
+    try {
+      const address = HOST + `/journal/post`;
+      const { data } = await axios.post(address, { selectedEntry });
       return data;
     } catch (err) {
       console.log(err);

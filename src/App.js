@@ -1,6 +1,6 @@
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import { Journal } from './components/pages';
+import { Journal, Login } from './components/pages';
 // import { QuillContainer } from './components/molecules';
 
 function App() {
@@ -9,6 +9,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/journal' element={<Journal />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </Router>
     </div>

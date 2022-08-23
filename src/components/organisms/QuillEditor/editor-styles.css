@@ -9,7 +9,7 @@
 .entry-title {
   font-size: 30px;
   font-weight: bolder;
-  background-color: darkolivegreen;
+  background-color: darkslategray;
   padding: 3px;
   padding-left: 20px;
   height: 59px;
@@ -29,4 +29,32 @@
 }
 .ql-container {
   height: calc(100% - 50px);
+}
+.editor-top-row {
+  display: flex;
+}
+.entry-date {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+.date-input {
+  font-size: 1.5rem;
+  display: flex;
+  width: 5rem;
+  background-color: darkolivegreen;
+  text-align: center;
+  border-color: black;
+  border-width: 1px;
+}
+.editor-buttons {
+  font-size: 1.5rem;
+  border-width: 1px;
+  background-color: darkolivegreen;
+}
+.toast-message {
+  background-color: darkgray !important;
+  font-weight: bold;
+  color: black !important;
+  font-size: 20px;
 }

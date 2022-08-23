@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { JournalProvider } from '../../context/journal-context';
+import { useAuth } from '../../hooks/use-auth';
+import { useNavigate } from 'react-router-dom';
 import { HeaderBanner, QuillEditor, SideBar } from '../../organisms';
 import './style.css';
 
@@ -10,6 +12,20 @@ export default function Journal() {
     entry_date: null,
     readOnly: false,
   });
+  const navigate = useNavigate();
+  const { isAuthenticated, reAuth } = useAuth();
+  useEffect(() => {
+    reAuth();
+    if (!isAuthenticated) {
+      console.log('Authenticated');
+      navigate('/login');
+    }
+  }, [isAuthenticated]);
+  // const { isAuthenticate, reAuth } = useAuth();
+  // reAuth();
+  // if (!isAuthenticate) {
+  //   navigate('/login', { replace: true });
+  // }
   return (
     <>
       <JournalProvider>

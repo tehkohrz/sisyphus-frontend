@@ -5,6 +5,7 @@ const ActionType = {
   GET: 'GET',
   POST: 'POST',
   UPDATE: 'UPDATE',
+  DATE: 'DATE',
 };
 
 const initialState = {
@@ -35,6 +36,15 @@ const handlers = {
       selectedEntry,
     };
   },
+  DATE: (state, action) => {
+    const { date } = action.payload;
+    const { selectedEntry } = state;
+    selectedEntry.entry_date = date;
+    return {
+      ...state,
+      selectedEntry,
+    };
+  },
 };
 
 const reducer = (state, action) =>
@@ -58,7 +68,6 @@ export const JournalProvider = (props) => {
       const month = entryDate.getUTCMonth() + 1;
       const date = entryDate.getUTCDate();
       const selectedEntry = await journalApi.getEntry(year, month, date);
-
       dispatch({
         type: ActionType.GET,
         payload: {
@@ -79,16 +88,26 @@ export const JournalProvider = (props) => {
       },
     });
   };
-
+  const updateDate = (date) => {
+    dispatch({
+      type: ActionType.DATE,
+      payload: {
+        date,
+      },
+    });
+  };
   return (
     <JournalContext.Provider
       value={{
         ...state,
         getEntry,
         updateEntry,
+        updateDate,
       }}
     >
       {children}
     </JournalContext.Provider>
   );
 };
+
+//! click handlers for the other day-items

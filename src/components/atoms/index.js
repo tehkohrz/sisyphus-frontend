@@ -6,3 +6,5 @@ export { default as DayCell } from './DayCell';
 export { default as DayTitle } from './DayTitle';
 export { default as MonthRow } from './MonthRow';
 export { default as DropDown } from './DropDown';
+export { default as DateBox } from './DateBox';
+export { default as Input } from './Input';

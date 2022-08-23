@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './editor-styles.css';
-
+import { journalApi } from '../../../api-functions/journal_api';
 import { useJournal } from '../../hooks/use-journal';
+import { Button, DateBox } from '../../atoms/';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function QuillEditor({ currentEntry }) {
   // Journal Context
-  const { read_only, selectedEntry, updateEntry } = useJournal();
+  const { read_only, selectedEntry, updateEntry, isInitialized } = useJournal();
   // To save the title and calculate the height of the div
   function titleSizeChangeHandler() {
     const title = document.getElementById('entry-title');
@@ -26,7 +29,7 @@ export default function QuillEditor({ currentEntry }) {
   }
 
   // OnChange handle for Quill Editor to save content
-  function quillChangeHandler(content) {
+  function quillInputHandler(content) {
     updateEntry({ ...selectedEntry, content });
   }
 
@@ -58,8 +61,35 @@ export default function QuillEditor({ currentEntry }) {
     'link',
     'image',
   ];
+
+  async function saveEntry() {
+    try {
+      const data = await journalApi.postEntry(selectedEntry);
+      if (data) {
+        toast('Entry Saved!', {
+          className: 'toast-message --toastify-color-dark',
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <div className='editor-container'>
+      <ToastContainer className='Toastify__toast-container--top-center ' />
+      <div className='editor-top-row'>
+        <DateBox entry_date={selectedEntry.entry_date} className='entry-date' />
+        {isInitialized && (
+          <div className='button-container'>
+            <Button
+              className='editor-buttons'
+              name='Save'
+              handleClick={saveEntry}
+            />
+            <Button className='editor-buttons' name='Delete' />
+          </div>
+        )}
+      </div>
       <textarea
         className='entry-title'
         id='entry-title'
@@ -72,7 +102,7 @@ export default function QuillEditor({ currentEntry }) {
           id='quillEditor'
           theme='snow'
           value={selectedEntry.content}
-          onChange={quillChangeHandler}
+          onInput={quillInputHandler}
           readOnly={read_only}
           modules={modules}
           formats={formats}
