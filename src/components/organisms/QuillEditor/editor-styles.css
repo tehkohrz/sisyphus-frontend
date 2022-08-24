@@ -1,8 +1,4 @@
-.editor-container {
-  width: 80%;
-  padding-top: 5px;
-  padding-right: 5px;
-}
+
 .text-editor {
   max-height: calc(100% - 59px);
 }

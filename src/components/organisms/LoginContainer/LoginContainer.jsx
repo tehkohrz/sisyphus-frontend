@@ -9,7 +9,7 @@ export default function LoginElement() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn, isAuthenticated, reAuth } = useAuth();
+  const { signIn, isAuthenticated} = useAuth();
   useEffect(() => {
     if (isAuthenticated) {
       console.log('Authenticated redirect');
@@ -28,6 +28,9 @@ export default function LoginElement() {
     try {
       // Input checks for login, redirecting to toast msg
       if (!username) {
+        if (!password) {
+          throw new Error('Please enter username & password');
+        }
         throw new Error('Please enter username');
       }
 
@@ -40,14 +43,14 @@ export default function LoginElement() {
         navigate('/journal');
       }
     } catch (err) {
-      toast(err.message);
-      console.log(err);
+      toast(err.message,{className: 'toast-message',autoClose:2000});
     }
   };
   return (
     <div className='login-container'>
       <ToastContainer />
-      <p className='title'>Login</p>
+      <p className='title'>Sisyphus</p>
+      <p className='subtitle'>Login</p>
       <Input
         className='login-input'
         placeholder='Username'
@@ -65,7 +68,7 @@ export default function LoginElement() {
       <div className='button-container'>
         <Button
           className='login-button'
-          name='SignIn'
+          name='Sign In'
           handleClick={loginHandler}
         ></Button>
       </div>

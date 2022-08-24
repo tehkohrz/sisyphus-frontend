@@ -4,7 +4,7 @@ import './style.css';
 
 export default function Login() {
   return (
-    <div className='main-container'>
+    <div className='main-login-container'>
       <LoginContainer />
     </div>
   );

@@ -1,8 +1,4 @@
-.sidebar-container {
-  width: 20%;
-  padding: 5px;
-  vertical-align: middle;
-}
+
 .month-grid-container {
   display: grid;
   /* grid-template-columns: 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem 2.5rem; */
