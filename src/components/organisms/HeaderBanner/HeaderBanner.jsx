@@ -7,13 +7,13 @@ import './style.css';
 export default function HeaderBanner() {
   const navigate = useNavigate();
   function returnToHomePage() {
-    navigate('/');
+    navigate('/journal');
   }
-  function sendToLoginPage() {
-    navigate('/login');
-  }
+  // function sendToLoginPage() {
+  //   navigate('/login');
+  // }
   // isLoggedIn, userName
-  const {isAuthenticated, user} = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <div className='header-banner'>
