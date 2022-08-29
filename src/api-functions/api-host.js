@@ -1,1 +1,1 @@
-export const HOST = 'http://localhost:3004';
+export const HOST = 'https://sisyphus-backend.herokuapp.com/';
