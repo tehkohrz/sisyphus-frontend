@@ -1,9 +1,15 @@
 import axios from 'axios';
 import { HOST } from './api-host';
 
+const MOCKDATA = true;
+const MOCKUSER = { success: true, user: { id: 1, username: 'MOCKUSER' } };
+
 class AuthApi {
   async signIn(username, password) {
     try {
+      if (MOCKDATA) {
+        return MOCKUSER;
+      }
       const address = HOST + '/signIn';
       const data = await axios.post(address, { username, password });
       return data;
@@ -17,6 +23,9 @@ class AuthApi {
   async reAuth() {
     try {
       const address = HOST + '/reAuth';
+      if (MOCKDATA) {
+        return MOCKUSER;
+      }
       // Returns success and user within data
       const { data } = await axios.get(address);
       if (data.success) {
@@ -31,6 +40,9 @@ class AuthApi {
   async logOut() {
     try {
       const address = HOST + '/logout';
+      if (MOCKDATA) {
+        return { success: MOCKUSER.success };
+      }
       const { data } = await axios.get(address);
       return data.sucess;
     } catch (err) {

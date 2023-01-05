@@ -9,13 +9,13 @@ export default function LoginElement() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn, isAuthenticated} = useAuth();
+  const { signIn, isAuthenticated } = useAuth();
   useEffect(() => {
     if (isAuthenticated) {
       console.log('Authenticated redirect');
       navigate('/journal');
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
   //! change Handlers for the inputs
   const usernameHandler = (e) => {
     setUsername(e.target.value);
@@ -43,7 +43,7 @@ export default function LoginElement() {
         navigate('/journal');
       }
     } catch (err) {
-      toast(err.message,{className: 'toast-message',autoClose:2000});
+      toast(err.message, { className: 'toast-message', autoClose: 2000 });
     }
   };
   return (
@@ -66,11 +66,7 @@ export default function LoginElement() {
         id='password'
       ></Input>
       <div className='button-container'>
-        <Button
-          className='login-button'
-          name='Sign In'
-          handleClick={loginHandler}
-        ></Button>
+        <Button className='login-button' name='Sign In' handleClick={loginHandler}></Button>
       </div>
     </div>
   );

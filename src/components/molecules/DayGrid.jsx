@@ -83,13 +83,7 @@ function GenerateDays(days) {
 export default function DayGrid({ monthYear, entriesInMonth }) {
   const { month, year } = monthYear;
   const { getEntry, updateDate } = useJournal();
-  const days = getDaysInMonthUTC(
-    month,
-    year,
-    entriesInMonth,
-    getEntry,
-    updateDate
-  );
+  const days = getDaysInMonthUTC(month, year, entriesInMonth, getEntry, updateDate);
   return (
     <>
       <div className='month-grid-container'>

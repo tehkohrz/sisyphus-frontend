@@ -17,15 +17,11 @@ export default function Journal() {
   useEffect(() => {
     reAuth();
     if (!isAuthenticated) {
-      console.log('Authenticated');
+      console.log('Not Authenticated');
       navigate('/login');
     }
-  }, [isAuthenticated]);
-  // const { isAuthenticate, reAuth } = useAuth();
-  // reAuth();
-  // if (!isAuthenticate) {
-  //   navigate('/login', { replace: true });
-  // }
+  }, [isAuthenticated, navigate, reAuth]);
+
   return (
     <>
       <JournalProvider>

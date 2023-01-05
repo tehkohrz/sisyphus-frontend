@@ -18,11 +18,11 @@ export default function HeaderBanner() {
   return (
     <div className='header-banner'>
       <div className='logo-container'>
-        <Logo
+        {/* <Logo
           className='logo'
           source={''}
           handleClick={returnToHomePage}
-        ></Logo>
+        ></Logo> */}
         <Header className='logo-header' title='Sisyphus' />
       </div>
       <div className='user-elements-container'>
@@ -31,10 +31,7 @@ export default function HeaderBanner() {
           <>
             <Header className='username' title={user.username} />
             <Header className='username' title={'/'} />
-            <Button
-              name='SignOut'
-              className='log-inout' /* handleClick={logout function}*/
-            />
+            <Button name='SignOut' className='log-inout' /* handleClick={logout function}*/ />
           </>
         )}
       </div>
