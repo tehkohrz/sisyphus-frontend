@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useJournal } from '../hooks/use-journal';
+// import { useJournal } from '../hooks/use-journal';
 
 export default function DateBox({ entry_date = null, className }) {
   // const { updateDate } = useJournal();
