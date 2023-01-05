@@ -18,7 +18,7 @@ export default function Journal() {
     reAuth();
     if (!isAuthenticated) {
       console.log('Not Authenticated');
-      navigate('/login');
+      navigate('/');
     }
   }, [isAuthenticated, navigate, reAuth]);
 

@@ -19,6 +19,10 @@ export default function DateBox({ entry_date = null, className }) {
         year: covertedDate.getUTCFullYear(),
       });
     }
+    // if (stateDate.date) {
+    //   const enteredDate = new Date(stateDate.year, stateDate.month - 1, stateDate.date);
+    //   updateDate(enteredDate);
+    // }
   }, [entry_date]);
   function dateInputHandler(e) {
     const date = e.target.value;
@@ -36,12 +40,6 @@ export default function DateBox({ entry_date = null, className }) {
     return year;
   }
   //Updates the date everytime the input changes
-  useEffect(() => {
-    if (stateDate.date) {
-      const enteredDate = new Date(stateDate.year, stateDate.month - 1, stateDate.date);
-      updateDate(enteredDate);
-    }
-  }, [stateDate, updateDate]);
 
   return (
     <div className={className}>
