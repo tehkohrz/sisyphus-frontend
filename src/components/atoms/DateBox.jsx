@@ -38,14 +38,10 @@ export default function DateBox({ entry_date = null, className }) {
   //Updates the date everytime the input changes
   useEffect(() => {
     if (stateDate.date) {
-      const enteredDate = new Date(
-        stateDate.year,
-        stateDate.month - 1,
-        stateDate.date
-      );
+      const enteredDate = new Date(stateDate.year, stateDate.month - 1, stateDate.date);
       updateDate(enteredDate);
     }
-  }, []);
+  }, [stateDate, updateDate]);
 
   return (
     <div className={className}>
